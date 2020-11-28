@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="categories">
       <div class="category-item">
         Управление технологическим процессом
@@ -16,27 +16,20 @@
 
     </div>
     <div class="table">
-      <el-table :data="tableData" style="width: 100%" max-height="450">
-        <el-table-column fixed prop="date" label="Date">
+      <el-table :data="offers" style="width: 100%" max-height="450">
+        <el-table-column fixed prop="title" label="Название">
         </el-table-column>
-        <el-table-column prop="name" label="Name">
+        <el-table-column prop="category" label="Вид предложения">
         </el-table-column>
-        <el-table-column prop="state" label="State">
+        <el-table-column prop="state" label="Автор">
         </el-table-column>
-        <el-table-column prop="city" label="City">
+        <el-table-column prop="createdAt" label="Дата">
         </el-table-column>
-        <el-table-column prop="address" label="Address">
+        <el-table-column prop="status" label="Статус">
         </el-table-column>
-        <el-table-column prop="zip" label="Zip"> </el-table-column>
-        <el-table-column fixed="right" label="Operations">
+        <el-table-column fixed="right" label="Действия">
           <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="deleteRow(scope.$index, tableData)"
-              type="text"
-              size="small"
-            >
-              Remove
-            </el-button>
+            <router-link :to="`/offer/${scope.row.id}`">Редактировать</router-link>
           </template>
         </el-table-column>
       </el-table>
@@ -45,65 +38,23 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    methods: {
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      }
-    },
     data() {
       return {
-        tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-08',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-06',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }, {
-          date: '2016-05-07',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036'
-        }]
+        loading: false,
+        offers: null
       }
+    },
+    methods: {
+      async fetchOfferList() {
+        const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}})
+        this.offers = response.data.items
+      }
+    },
+    mounted() {
+      this.fetchOfferList()
     }
   }
 </script>
