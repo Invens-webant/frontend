@@ -27,6 +27,9 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  text-align: left;
+  font-style: normal;
+  line-height: 23px;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
