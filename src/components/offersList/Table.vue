@@ -26,6 +26,9 @@
         <el-table-column prop="createdAt" label="Дата">
         </el-table-column>
         <el-table-column prop="status" label="Статус">
+          <template slot-scope="scope">
+            <el-tag>{{ status[scope.row.status] }}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column fixed="right" label="Действия">
           <template slot-scope="scope">
@@ -41,16 +44,27 @@
 import axios from 'axios'
 
 export default {
+    watch: {
+      $route() {
+        this.fetchOfferList()
+      }
+    },
     data() {
       return {
         loading: false,
-        offers: null
+        offers: null,
+        status: ['Новая', 'Одобрена', 'На тестировании', 'На тираже', 'Внедрена', 'Отменена', 'На доработке']
       }
     },
     methods: {
       async fetchOfferList() {
-        const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}})
-        this.offers = response.data.items
+        if(this.$route.path.includes('new')) {
+          const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {status: 0}},)
+          this.offers = response.data.items
+        } else {
+          const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {'status[]': [1, 2, 3, 4]}})
+          this.offers = response.data.items
+        }
       }
     },
     mounted() {

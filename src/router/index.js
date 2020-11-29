@@ -18,6 +18,11 @@ const routes = [
     component: OfferList
   },
   {
+    path: "/accepted",
+    name: "AcceptedOffers",
+    component: OfferList
+  },
+  {
     path: '/offer/:id',
     name: "OfferContainer",
     component: OfferContainer
@@ -27,7 +32,13 @@ const routes = [
     name: "ideaForm",
     component: () =>
       import("../components/ideaForm.vue")
-  }
+  },
+  {
+    path: "/model",
+    name: "Model",
+    component: () =>
+      import("../views/3DModel.vue")
+  },
 ];
 
 const router = new VueRouter({

@@ -85,18 +85,18 @@
             <tab-content title="Затраты" icon="el-icon-pie-chart">
                 <el-form label-position="top">
                     <div
-                        v-for="(cost) in formOffer.costs"
-                        :key="cost.key"
+                        v-for="(cost, index) in formOffer.costs"
+                        :key="`${index}_cost`"
                         class="cost"
                     >
                         <el-form-item label="Статья затрат">
                             <div style="display: flex">
-                                <el-input v-model="cost.value.cost" placeholder="Введите"/>
+                                <el-input v-model="cost.item" placeholder="Введите"/>
                                 <el-button type="primary" @click="addDomain" style="margin-left: 20px">Добавить</el-button>
                             </div>
                         </el-form-item>
                         <el-form-item label="Стоимость">
-                            <el-input v-model="cost.value.item" placeholder="Введите"/>
+                            <el-input v-model="cost.cost" placeholder="Введите"/>
                         </el-form-item>
                         <el-button type="danger" @click.prevent="removeDomain(cost)" style="text-align: right">Delete</el-button>
                     </div>
@@ -105,18 +105,18 @@
             <tab-content title="Сроки" icon="el-icon-time">
                 <el-form label-position="top">
                     <div
-                        v-for="(time) in formOffer.timing"
-                        :key="time.key"
+                        v-for="(time,index) in formOffer.timing"
+                        :key="`${index}_timing`"
                         class="cost"
                     >
                         <el-form-item label="Этап">
                             <div style="display: flex">
-                                <el-input v-model="time.value.time" placeholder="Введите"/>
+                                <el-input v-model="time.time" placeholder="Введите"/>
                                 <el-button type="primary" @click="addDomain" style="margin-left: 20px">Добавить</el-button>
                             </div>
                         </el-form-item>
                         <el-form-item label="Срок">
-                            <el-input v-model="time.value.item" placeholder="Введите"/>
+                            <el-input v-model="time.item" placeholder="Введите"/>
                         </el-form-item>
                         <el-button type="danger" @click.prevent="removeDomain(time)" style="text-align: right">Delete</el-button>
                     </div>
@@ -124,12 +124,22 @@
             </tab-content>
             <tab-content title="Соавторы" icon="el-icon-user">
                 <el-form label-position="top">
-                    <el-form-item label="Соавтор" prop="tiltle">
-                        <el-input 
-                            v-model="formOffer.title" 
-                            placeholder="ФИО"
-                        />
-                    </el-form-item>
+                    <div
+                        v-for="(author,index) in formOffer.coAuthors"
+                        :key="`${index}_coAuthors`"
+                        class="cost"
+                    >
+                        <el-form-item label="Этап">
+                            <div style="display: flex">
+                                <el-input v-model="author.item" placeholder="Введите"/>
+                                <el-button type="primary" @click="addDomain" style="margin-left: 20px">Добавить</el-button>
+                            </div>
+                        </el-form-item>
+                        <el-form-item label="Срок">
+                            <el-input v-model="author.benefit" placeholder="Введите"/>
+                        </el-form-item>
+                        <el-button type="danger" @click.prevent="removeDomain(time)" style="text-align: right">Delete</el-button>
+                    </div>
                 </el-form>
             </tab-content>
             <tab-content title="Документы" icon="el-icon-document">
@@ -160,15 +170,12 @@
                             </span>
                             </div>
                         </el-upload>
-                        <el-dialog :visible.sync="dialogVisible">
-                            <span width="100%"> {{ dialogImageName }} </span>
-                        </el-dialog>
                     </el-form-item>
                 </el-form>
             </tab-content>
             <el-button type="primary" slot="prev">Назад</el-button>
             <el-button type="primary" slot="next">Вперед</el-button>
-            <el-button type="primary" slot="finish">Создать</el-button>
+            <el-button type="primary" slot="finish" @click="saveForm">Создать</el-button>
         </form-wizard>
     </div>
 
@@ -177,6 +184,7 @@
 <script>
 import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import axios from 'axios'
 
 export default {
     name: 'IdeaForm',
@@ -192,31 +200,32 @@ export default {
             disabled: false,
 
             formOffer: {
+                rating: 0,
                 organization: 'Россети',
-                fio: 'Антонов Антов Власов',
+                author: 'Антонов Антов Власов',
                 position: 'Электрик',
                 filial: 'Ростовский',
                 education: 'Высшее',
                 experience: '10 лет',
                 birthday: '06.03.1988',
-                category: '',
-                title: '',
-                currentSolution: '',
-                proposedSolution: '',
-                expectedResult: '',
-                costs: [{
-                    key: 1,
-                    value: [{
-                        item: '',
-                        cost: ''
-                    }]
-                }],
+                category: 'Не относится',
+                title: 'Улучшение производства',
+                currentSolution: 'характеристика проблемы, которую решает рационализаторское предложение, должна описывать недостатки действующей конструкции изделия, технологии производства, применяемой техники или состава материала',
+                proposedSolution: 'описание предлагаемого решения должно раскрывать в степени, необходимой для его практического осуществления, конструкцию, технические характеристики и другие существенные признаки предлагаемого к внедрению продукта. Прилагаются спецификации, чертежи, рисунки, фото, руководство по монтажу и наладке, руководство пользователя, дистрибутив и др. документы',
+                expectedResult: 'указывается информация об ожидаемом техническом, организационном, управленческом или ином положительном эффекте от использования. Расчет планируемой эффективности применения рационализаторского предложения готовится согласно Приложению 10 к настоящему Положению и прикладывается к заявлению',
+                costs: [ 
+                    {
+                        item: 'Купить инструменты',
+                        cost: '1000 $'
+                    }
+                ],
                 timing: [{
-                    key: 1,
-                    value: [{
-                        item: '',
-                        time: ''
-                    }]
+                    item: 'Тестированин',
+                    time: '3 месяца'
+                }],
+                coAuthors: [{
+                    item: 'Леонид',
+                    benefit: '3%'
                 }],
             },
             rules: {
@@ -277,6 +286,13 @@ export default {
                     cost: ''
                 }]
             });
+        },
+
+        async saveForm() {
+            this.formOffer.costs = JSON.stringify(this.formOffer.costs)
+            this.formOffer.timing = JSON.stringify(this.formOffer.timing)
+            this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
+            await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
         },
 
         removeDomain(item) {

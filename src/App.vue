@@ -31,6 +31,9 @@ export default {
   font-style: normal;
   line-height: 23px;
 }
+body {
+  background-color: #F8F9FB;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -60,6 +63,5 @@ export default {
 }
 .app-wrapper {
   height: 100%;
-  background-color: #F8F9FB;
 }
 </style>
