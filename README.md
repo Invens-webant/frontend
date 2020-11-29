@@ -1,29 +1,22 @@
-# admin
+# Invens Frontend
 
-## Project setup
+
+## Склонируйте репозиторий
 ```
+git clone https://github.com/Invens-webant/frontend
+```
+## Установка зависимостей 
+```
+cd frontend
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Запуск проекта
 ```
 yarn run serve
 ```
 
-### Compiles and minifies for production
+### Билд проекта
 ```
 yarn run build
 ```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
