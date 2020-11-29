@@ -46,7 +46,8 @@
                 <el-form label-position="top" class="proposals">
                     <div class="proposal-item">
                         <el-form-item label="Текущее положение" prop="currentSolution">
-                            <el-input 
+                            <el-input
+                                rows="8"
                                 type="textarea"
                                 v-model="formOffer.currentSolution" 
                                 placeholder="Введите"
@@ -59,6 +60,7 @@
                     <div class="proposal-item">
                         <el-form-item label="Предлагаемое решение" prop="proposedSolution">
                             <el-input 
+                                rows="8"
                                 type="textarea"
                                 v-model="formOffer.proposedSolution" 
                                 placeholder="Введите"
@@ -71,6 +73,7 @@
                     <div class="proposal-item">
                         <el-form-item label="Ожидаемый результат" prop="expectedResult">
                             <el-input
+                                rows="8"
                                 type="textarea"
                                 v-model="formOffer.expectedResult" 
                                 placeholder="Введите"
@@ -129,13 +132,13 @@
                         :key="`${index}_coAuthors`"
                         class="cost"
                     >
-                        <el-form-item label="Этап">
+                        <el-form-item label="Соавтор">
                             <div style="display: flex">
                                 <el-input v-model="author.item" placeholder="Введите"/>
                                 <el-button type="primary" @click="addDomain" style="margin-left: 20px">Добавить</el-button>
                             </div>
                         </el-form-item>
-                        <el-form-item label="Срок">
+                        <el-form-item label="Процент вознаграждения">
                             <el-input v-model="author.benefit" placeholder="Введите"/>
                         </el-form-item>
                         <el-button type="danger" @click.prevent="removeDomain(time)" style="text-align: right">Delete</el-button>
@@ -292,6 +295,7 @@ export default {
             this.formOffer.costs = JSON.stringify(this.formOffer.costs)
             this.formOffer.timing = JSON.stringify(this.formOffer.timing)
             this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
+            delete this.formOffer.coAuthors
             await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
             this.$router.push('/new')
         },

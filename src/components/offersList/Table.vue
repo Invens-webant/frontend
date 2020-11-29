@@ -1,5 +1,8 @@
 <template>
   <div v-loading="loading">
+    <div class="page-title">
+      <h1>{{ $route.path.includes('new') ? 'Новые' : $route.path.includes('accepted') ? 'Одобренные' : 'Реестр'}}</h1>
+    </div>
     <div class="categories">
       <div class="category-item">
         Управление технологическим процессом
@@ -21,7 +24,7 @@
         </el-table-column>
         <el-table-column prop="category" label="Вид предложения">
         </el-table-column>
-        <el-table-column prop="state" label="Автор">
+        <el-table-column prop="author" label="Автор">
         </el-table-column>
         <el-table-column prop="createdAt" label="Дата">
         </el-table-column>
@@ -61,7 +64,7 @@ export default {
         if(this.$route.path.includes('new')) {
           const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {status: 0}},)
           this.offers = response.data.items
-        } else if (this.$route.includes.path('accepted')){
+        } else if (this.$route.path.includes('accepted')){
           const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {'status[]': [1, 2, 3, 4]}})
           this.offers = response.data.items
         } else {
@@ -95,5 +98,8 @@ export default {
     border-radius: 5px;
     margin-right: 10px;
     text-align: center;
+  }
+  .page-title {
+    margin-top: 20px;
   }
 </style>
