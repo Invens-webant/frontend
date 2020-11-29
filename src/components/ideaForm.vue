@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form-wizard @on-complete="onComplete" shape="circle" color="#20a0ff" error-color="#ff4949" title="Регистрация рацзаявления" subtitle="">
+        <form-wizard shape="circle" color="#20a0ff" error-color="#ff4949" title="Регистрация рацзаявления" subtitle="">
             <tab-content title="Персональные данные" icon="el-icon-user" :before-change="validateFirstStep">
                 <el-form :model="formOffer" class="form" :rules="rules" ref="ruleForm" label-width="120px" label-position="top">
                     <el-form-item label="Организация" prop="organization">
@@ -271,9 +271,6 @@ export default {
         }
     },
     methods: {
-        onComplete: function() {
-            alert('Yay. Done!');
-        },
         validateFirstStep() {
             return new Promise((resolve) => {
                 this.$refs.ruleForm.validate((valid) => {
@@ -296,8 +293,13 @@ export default {
             this.formOffer.timing = JSON.stringify(this.formOffer.timing)
             this.formOffer.author = '/users/4'
             // this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
-            await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
-            this.$router.push('/new')
+            try {
+                await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
+                this.$router.push('/new')
+                this.$message.success('Заявка успешно создана')
+            } catch {
+                this.$message.error('Серверная ошибка')
+            }
         },
 
         removeDomain(item) {

@@ -600,4 +600,7 @@ p {
 .el-step {
   cursor: pointer;
 }
+.controllers {
+  margin-bottom: 50px;
+}
 </style>
