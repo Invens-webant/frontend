@@ -53,13 +53,13 @@ export default {
 }
 
 .container {
-  padding-top: 20px;
   margin: 0 auto;
   padding-left: 100px;
   padding-right: 100px;
+  height: 100vh;
 }
 .app-wrapper {
-  height: 100vh;
+  height: 100%;
   background-color: #F8F9FB;
 }
 </style>

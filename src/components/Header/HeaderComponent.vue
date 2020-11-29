@@ -12,8 +12,8 @@
                 <el-menu-item index="3">
                     <router-link :to="'/accepted'">Принятые</router-link>
                 </el-menu-item>
-                <el-menu-item index="4" disabled>
-                    <router-link :to="'/reestr'">Новые</router-link>
+                <el-menu-item index="4">
+                    <router-link :to="'/idea-form'">Создать новое предложение</router-link>
                 </el-menu-item>
             </div>
         </div>
