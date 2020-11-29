@@ -293,6 +293,7 @@ export default {
             this.formOffer.timing = JSON.stringify(this.formOffer.timing)
             this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
             await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
+            this.$router.push('/new')
         },
 
         removeDomain(item) {

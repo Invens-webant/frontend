@@ -23,6 +23,11 @@ const routes = [
     component: OfferList
   },
   {
+    path: "/reestr",
+    name: "FullAcceptedOffers",
+    component: OfferList
+  },
+  {
     path: '/offer/:id',
     name: "OfferContainer",
     component: OfferContainer

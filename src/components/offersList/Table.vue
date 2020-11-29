@@ -61,8 +61,11 @@ export default {
         if(this.$route.path.includes('new')) {
           const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {status: 0}},)
           this.offers = response.data.items
-        } else {
+        } else if (this.$route.includes.path('accepted')){
           const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {'status[]': [1, 2, 3, 4]}})
+          this.offers = response.data.items
+        } else {
+          const response = await axios.get('https://invents.dev2.webant.ru/offers', {headers: {'Accept': 'application/json'}, params: {status: 4}})
           this.offers = response.data.items
         }
       }
