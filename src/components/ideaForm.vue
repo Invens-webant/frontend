@@ -6,8 +6,8 @@
                     <el-form-item label="Организация" prop="organization">
                         <el-input v-model="formOffer.organization" placeholder="Введите..."/>
                     </el-form-item>
-                    <el-form-item label="ФИО" prop="fio">
-                        <el-input v-model="formOffer.fio" placeholder="Введите..."/>
+                    <el-form-item label="ФИО" prop="author">
+                        <el-input v-model="formOffer.author" placeholder="Введите..."/>
                     </el-form-item>
                     <el-form-item label="Должность" prop="position">
                         <el-input v-model="formOffer.position" placeholder="Введите..."/>
@@ -125,7 +125,7 @@
                     </div>
                 </el-form>
             </tab-content>
-            <tab-content title="Соавторы" icon="el-icon-user">
+            <!-- <tab-content title="Соавторы" icon="el-icon-user">
                 <el-form label-position="top">
                     <div
                         v-for="(author,index) in formOffer.coAuthors"
@@ -144,7 +144,7 @@
                         <el-button type="danger" @click.prevent="removeDomain(time)" style="text-align: right">Delete</el-button>
                     </div>
                 </el-form>
-            </tab-content>
+            </tab-content> -->
             <tab-content title="Документы" icon="el-icon-document">
                 <el-form label-position="top">
                     <el-form-item label="Название предложения" prop="tiltle">
@@ -205,7 +205,7 @@ export default {
             formOffer: {
                 rating: 0,
                 organization: 'Россети',
-                author: 'Антонов Антов Власов',
+                author: '',
                 position: 'Электрик',
                 filial: 'Ростовский',
                 education: 'Высшее',
@@ -226,10 +226,10 @@ export default {
                     item: 'Тестированин',
                     time: '3 месяца'
                 }],
-                coAuthors: [{
-                    item: 'Леонид',
-                    benefit: '3%'
-                }],
+                // coAuthors: [{
+                //     item: 'Леонид',
+                //     benefit: '3%'
+                // }],
             },
             rules: {
                 organization: [{
@@ -237,7 +237,7 @@ export default {
                     message: 'Заполните поле',
                     trigger: 'blur'
                 }],
-                fio: [{
+                author: [{
                     required: true,
                     message: 'Заполните поле',
                     trigger: 'blur'
@@ -294,8 +294,8 @@ export default {
         async saveForm() {
             this.formOffer.costs = JSON.stringify(this.formOffer.costs)
             this.formOffer.timing = JSON.stringify(this.formOffer.timing)
-            this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
-            delete this.formOffer.coAuthors
+            this.formOffer.author = '/users/4'
+            // this.formOffer.coAuthors = JSON.stringify(this.formOffer.coAuthors)
             await axios.post('https://invents.dev2.webant.ru/offers', this.formOffer)
             this.$router.push('/new')
         },
